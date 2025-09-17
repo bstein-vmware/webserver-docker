@@ -4,7 +4,11 @@
 git clone https://github.com/bstein-vmware/webserver-docker.git
 cd webserver-docker
 podman build -t webserver-docker .
-docker run -d -p 80:80 webserver-docker
+podman run -d -p 8080:80 webserver-docker
+podman ps -a #copy the NAME or CONTAINER ID
+podman exec -it [NAME] /bin/sh # execute a shell in the running container to poke around
+podman stop [NAME] && podman rm [NAME]
+
 
 ### Push container to repo (Harbor) and run on VKS
 >podman image ls #copy the IMAGE_ID
