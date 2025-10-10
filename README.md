@@ -13,7 +13,7 @@ podman stop [NAME] && podman rm [NAME]
 ### Push container to repo (Harbor) and run on VKS
 ```podman image ls #copy the IMAGE_ID
 podman tag [IMAGE_ID] harbor.site-a.vcf.lab/library/webserver-docker:v1
-podman push harbor.site-a.vcf.lab/library/webserver-docker:v1
+podman push harbor.site-a.vcf.lab/library/webserver-docker:v1 #allow a few minutes to push up to Harbor
 vcf context use vks-cluster-qxml:kubernetes-cluster-qxml
 kubectl label --overwrite namespace default pod-security.kubernetes.io/enforce=privileged
 kubectl run webserver-docker-1 --image=harbor.site-a.vcf.lab/library/webserver-docker:v1 -n default --label app=webserver-docker --dry-run=server -o yaml > webserver-docker.yaml
