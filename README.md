@@ -19,7 +19,8 @@ kubectl label --overwrite namespace default pod-security.kubernetes.io/enforce=p
 kubectl run webserver-docker-1 --image=harbor.site-a.vcf.lab/library/webserver-docker:v1 -n default --label app=webserver-docker --dry-run=server -o yaml > webserver-docker.yaml
 vim webserver-docker-pod.yaml #Insepct the yaml to see the image definition
 kubectl apply -f webserver-docker-pod.yaml
-kubectl expose pod webserver-docker --type=LoadBalancer --port=80 --label app=webserver-docker --dry-run=server -o yaml webserver-docker-svc.yaml
+kubectl expose pod webserver-docker --type=LoadBalancer --port=80 --label app=webserver-docker --dry-run=server -o yaml > webserver-docker-svc.yaml
+kubectl apply -f webserver-docker-svc.yaml
 ```
 
 ### Release a new chagne to the app and expose it with a Load Balancer service
@@ -32,7 +33,7 @@ kubectl run webserver-docker-2 --image=harbor.site-a.vcf.lab/library/webserver-d
 * Now we have two versions of the app running behind the load balancer
 ```
 
-### loop to show load balancing across pods
+### Loop to show load balancing across pods
 ```
 while true;
   do curl 10.1.0.12 | grep color;
@@ -44,4 +45,4 @@ done
 ```kubectl delete pod --label webserver-docker
 kubectl delete svc webserver-docker
 kubectl create deploy webserver-docker --image=harbor.site-a.vcf.lab/library/webserver-docker:v2 -n default --label app=webserver-docker --replicas=2
-kubectl expose deploy webserver-docker --type=LoadBalancer --port=80
+kubectl apply -f webserver-docker-svc.yaml
